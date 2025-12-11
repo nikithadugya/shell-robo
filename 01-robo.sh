@@ -11,7 +11,7 @@ do
     INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro $SG_ID sg-043c394b36a5f4c32 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
     #Get Private IP
-    if [ $instance != "frontend"]; then
+    if [ $instance != "frontend" ]; then
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)
         RECORD_NAME="$instance.$DOMAIN_NAME"  # mongo --> Instance given at run time and mongo.dawsnikitha.fun we get 
     else
