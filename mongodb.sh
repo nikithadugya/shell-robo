@@ -1,10 +1,11 @@
 #!/bin/bash
 
+# This script is for validating the user at 20 line no and then following manual documentation and write script accordingly at 35 line no and then installing.
+
 R="\e[31m"
 G="\e[32m"
 Y="\[e33m"
 Normal="\e[0m"
-
 
 
 LOGS_FOLDER="/var/log/shell-robo"
