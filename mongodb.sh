@@ -31,9 +31,10 @@ else
 fi
 }
 
+
 # follow manual documentation and write script accordingly like next 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo # we have created mongo.repo file seperately and in that we have given all the content and now we are cp this to /etc/yum.repos.d/mongo.repo 
 VALIDATE $? "Adding Mongo repo"
 
 dnf install mongodb-org -y &>>LOG_FILE
@@ -44,3 +45,13 @@ VALIDATE $? "Enable MongoDB"
 
 systemctl start mongod
 VALIDATE $? "Start MongoDB"
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongo.conf
+VALIDATE $? "Allowing remote connections to Mongodb"
+
+systemctl restart mongod
+VALIDATE $? "Restarted MongoDB"
+
+
+# Here total Database Mongodb creating and setup and installing everything done. Next is Backend.
+
