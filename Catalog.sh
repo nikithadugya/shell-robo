@@ -91,7 +91,7 @@ VALIDATE $? "Install MONGODB Client"
 
 #Checking whether the schema catalogue already present in the database mongo to avoid duplicate
 INDEX=$(mongosh mongodb.dawsnikitha.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalog')")
-if[ $INDEX -le 0 ]; then
+if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
     VALIDATE $? "Load Catalogue produvts i.e, Loading Schemas from backend to database"
 else
