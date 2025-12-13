@@ -83,7 +83,7 @@ VALIDATE $? "demon reload"
 systemctl enable catalogue &>>$LOG_FILE
 VALIDATE $? "enabling catalog"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copy mongo repo"
 
 dnf install mongodb-mongosh -y &>>$LOG_FILE
