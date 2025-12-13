@@ -11,7 +11,7 @@ Normal="\e[0m"
 LOGS_FOLDER="/var/log/shell-robo"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 ) # $0 --> Current file name  --> 14-logs
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-MONGODB_HOST="mongodb.daws.nikitha.fun"
+MONGODB_HOST="mongodb.dawsnikitha.fun"
 SCRIPT_DIR="$PWD"
 mkdir -p $LOGS_FOLDER  # -p means if directory is not there it creates if directory is there is keeps quiet
 echo "Script started executed at: $(date)" | tee -a $LOG_FILE  # tee command appends the output printing of this command on mobexterm same in LOg file as well.
@@ -90,7 +90,7 @@ dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Install MONGODB Client"
 
 #Checking whether the schema catalogue already present in the database mongo to avoid duplicate
-INDEX=$(mongosh mongodb.daws.nikitha.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalog')")
+INDEX=$(mongosh mongodb.dawsnikitha.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalog')")
 if[ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
     VALIDATE $? "Load Catalogue produvts i.e, Loading Schemas from backend to database"
