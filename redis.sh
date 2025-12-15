@@ -11,7 +11,7 @@ Normal="\e[0m"
 LOGS_FOLDER="/var/log/shell-robo"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 ) # $0 --> Current file name  --> 14-logs
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-STSRT_TIME=$(date +%s)
+START_TIME=$(date +%s)
 mkdir -p $LOGS_FOLDER  # -p means if directory is not there it creates if directory is there is keeps quiet
 echo "Script started executed at: $(date)" | tee -a $LOG_FILE  # tee command appends the output printing of this command on mobexterm same in LOg file as well.
 USERID=$(id -u)
