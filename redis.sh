@@ -39,7 +39,7 @@ VALIDATE $? "Disabling Default Redis"
 dnf module enable redis:7 -y &>>$LOG_FILE
 VALIDATE $? "Enabling redis 7"
 
-systemctl install redis -y &>>$LOG_FILE
+dnf install redis -y &>>$LOG_FILE
 VALIDATE $? "Installing Redis"
 
 sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode/ c protected-mode no' /etc/redis/redis.conf  # Here -e is used because we are replacing two things port no and protected mode so for seperation we use -e
