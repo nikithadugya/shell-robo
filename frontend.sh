@@ -59,7 +59,7 @@ VALIDATE $? "Unzip Catalogue"
 
 # Here also we got error because now while executing script it is in /app folder so in app folder we don't have catalog.service we have thos in robo-shell directory so are using pwd it goes to present working directoy that means while excuting script it's present working directory is Robo-shop so catalog.service is present init
 
-cp $SCRIPT_DIR/nginx.conf vim /etc/nginx/nginx.conf
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE $? "Copy systemctl services"
 
 systemctl restart frontend
