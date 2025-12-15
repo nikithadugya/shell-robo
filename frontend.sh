@@ -62,8 +62,8 @@ VALIDATE $? "Unzip Catalogue"
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VALIDATE $? "Copy systemctl services"
 
-systemctl restart frontend
-VALIDATE $? "Restarted frontend"
+systemctl restart nginx
+VALIDATE $? "Restarted nginx"
 
 
 
