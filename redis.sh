@@ -11,7 +11,7 @@ Normal="\e[0m"
 LOGS_FOLDER="/var/log/shell-robo"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 ) # $0 --> Current file name  --> 14-logs
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-
+STSRT_TIME=$(date +%s)
 mkdir -p $LOGS_FOLDER  # -p means if directory is not there it creates if directory is there is keeps quiet
 echo "Script started executed at: $(date)" | tee -a $LOG_FILE  # tee command appends the output printing of this command on mobexterm same in LOg file as well.
 USERID=$(id -u)
@@ -32,26 +32,26 @@ fi
 }
 
 
-# follow manual documentation and write script accordingly like next 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo # we have created mongo.repo file seperately and in that we have given all the content and now we are cp this to /etc/yum.repos.d/mongo.repo 
-VALIDATE $? "Adding Mongo repo"
+dnf module disable redis -y &>>$LOG_FILE
+VALIDATE $? "Disabling Default Redis"
 
-dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "Installing MongoDB"
+dnf module enable redis:7 -y &>>$LOG_FILE
+VALIDATE $? "Enabling redis 7"
 
-systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "Enable MongoDB"
+systemctl install redis -y &>>$LOG_FILE
+VALIDATE $? "Installing Redis"
 
-systemctl start mongod
-VALIDATE $? "Start MongoDB"
+sed -i -e 's/127.0.0.1/0.0.0.0/g' -e '/protected-mode/ c protected-mode no' /etc/mongod.conf  # Here -e is used because we are replacing two things port no and protected mode so for seperation we use -e
+VALIDATE $? "Allowing remote connections to Redis"
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "Allowing remote connections to Mongodb"
+dnf enable redis &>>$LOG_FILE
+VALIDATE $? "Enabling redis"
 
-systemctl restart mongod
-VALIDATE $? "Restarted MongoDB"
+systemctl start redis &>>$LOG_FILE
+VALIDATE $? "Started redis"
 
-
-# Here total Database Mongodb creating and setup and installing everything done. Next is Backend.
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+echo -e "Script executed in: $Y $TOTAL_TIME Seconds"
 

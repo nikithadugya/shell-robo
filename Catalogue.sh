@@ -67,21 +67,21 @@ VALIDATE $? "Changing to App Directory"
 # Here we got error because if files already present in app folder then it throws error so before only we are deleting
 rm -rf /app/*
 unzip /tmp/catalogue.zip &>>$LOG_FILE
-VALIDATE $? "Unzip Catalog"
+VALIDATE $? "Unzip Catalogue"
 
 npm install &>>$LOG_FILE
 VALIDATE $? "Install Dependencies"
 
 # Here also we got error because now while executing script it is in /app folder so in app folder we don't have catalog.service we have thos in robo-shell directory so are using pwd it goes to present working directoy that means while excuting script it's present working directory is Robo-shop so catalog.service is present init
 
-cp $SCRIPT_DIR/catalog.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Copy systemctl services"
 
 systemctl daemon-reload
 VALIDATE $? "demon reload"
 
 systemctl enable catalogue &>>$LOG_FILE
-VALIDATE $? "enabling catalog"
+VALIDATE $? "enabling catalogue"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copy mongo repo"
@@ -95,11 +95,11 @@ if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOG_FILE
     VALIDATE $? "Load Catalogue produvts i.e, Loading Schemas from backend to database"
 else
-    echo -e "Catalog products already loaded... $Y SKIPPING $N"
+    echo -e "Catalogue products already loaded... $Y SKIPPING $N"
 fi
 
 systemctl restart catalogue
-VALIDATE $? "Restarted catalog"
+VALIDATE $? "Restarted catalogue"
 
 
 

@@ -11,7 +11,8 @@ Normal="\e[0m"
 LOGS_FOLDER="/var/log/shell-robo"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 ) # $0 --> Current file name  --> 14-logs
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-
+STSRT_TIME=$(date +%s)
+SCRIPT_DIR="$PWD"
 mkdir -p $LOGS_FOLDER  # -p means if directory is not there it creates if directory is there is keeps quiet
 echo "Script started executed at: $(date)" | tee -a $LOG_FILE  # tee command appends the output printing of this command on mobexterm same in LOg file as well.
 USERID=$(id -u)
@@ -31,27 +32,23 @@ else
 fi
 }
 
+cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>>$LOG_FILE
+VALIDATE $? "Adding RabbitMQ repo"
 
-# follow manual documentation and write script accordingly like next 
+dnf install rabbitmq-server -y &>>$LOG_FILE
+VALIDATE $? "Installing RabbitMQ Server"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo # we have created mongo.repo file seperately and in that we have given all the content and now we are cp this to /etc/yum.repos.d/mongo.repo 
-VALIDATE $? "Adding Mongo repo"
+systemctl enable rabbitmq-server &>>$LOG_FILE
+VALIDATE $? "Enabling rabbitmq Server"
 
-dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "Installing MongoDB"
+systemctl start rabbitmq-server &>>$LOG_FILE
+VALIDATE $? "starting rabbitmq Server"
 
-systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "Enable MongoDB"
+rabbitmqctl add_user roboshop roboshop123 &>>$LOG_FILE
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOG_FILE
+VALIDATE $? "Setting up permissions"
 
-systemctl start mongod
-VALIDATE $? "Start MongoDB"
-
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "Allowing remote connections to Mongodb"
-
-systemctl restart mongod
-VALIDATE $? "Restarted MongoDB"
-
-
-# Here total Database Mongodb creating and setup and installing everything done. Next is Backend.
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+echo -e "Script executed in: $Y $TOTAL_TIME Seconds"
 
