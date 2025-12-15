@@ -59,7 +59,7 @@ rm -rf /app/*
 unzip /tmp/payment.zip &>>$LOG_FILE
 VALIDATE $? "Unzip payment"
 
-cp SCRIPT_DIR/payment.service /etc/systemd/system/payment.service &>>$LOG_FILE
+cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service &>>$LOG_FILE
 
 systemctl daemon-reload
 VALIDATE $? "demon reload"
